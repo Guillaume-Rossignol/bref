@@ -32,6 +32,11 @@ plugins:
     - ./vendor/bref/bref
 functions:
     hello:
+        handler: bin/hello
+        layers:
+            - ${bref:layer.php-74} # PHP runtime
+            - ${bref:layer.console} # Console layer
+    console:
         handler: bin/console # or 'artisan' for Laravel
         layers:
             - ${bref:layer.php-74} # PHP runtime
@@ -46,26 +51,27 @@ To run a console command on AWS Lambda, run `bref cli` on your computer:
 vendor/bin/bref cli <function-name> -- <command>
 ```
 
-`<function-name>` is the name of the function that was define in `serverless.yml`. In our example above that would be `hello`.
+`<function-name>` is the name of the function that was define in `serverless.yml`. In our example above that would be `hello` or `console`. If `<function-name>` isn't given, bref search a function named `console`
 
 Pass your command, arguments and options by putting them after `--`. The `--` delimiter separates between options for the `bref cli` command (before `--`) and your command (after `--`).
 
 ```bash
 vendor/bin/bref cli hello <bref options> -- <your command, your options>
+vendor/bin/bref cli <bref options> -- <your command, your options>
 ```
 
 For example:
 
 ```bash
-# Runs the CLI application without arguments and displays the help
-$ vendor/bin/bref cli hello-dev
+# Runs the hello script without arguments and displays the help
+$ vendor/bin/bref cli hello
 # ...
 
-$ vendor/bin/bref cli hello -- doctrine:migrations:migrate
+$ vendor/bin/bref cli -- doctrine:migrations:migrate
 Your database will be migrated.
 To execute the SQL queries run the command with the `--force` option.
 
-$ vendor/bin/bref cli hello -- doctrine:migrations:migrate --force
+$ vendor/bin/bref cli -- doctrine:migrations:migrate --force
 Your database has been migrated.
 
 # Use environment variables to configure your AWS credentials

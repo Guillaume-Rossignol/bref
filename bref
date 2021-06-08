@@ -114,7 +114,7 @@ $app->command('init', function (SymfonyStyle $io) {
 /**
  * Run a CLI command in the remote environment.
  */
-$app->command('cli function [--profile=] [arguments]*', function (string $function, ?string $profile, array $arguments, SymfonyStyle $io) {
+$app->command('cli [function] [--profile=] [arguments]*', function (string $function = 'console', ?string $profile, array $arguments, SymfonyStyle $io) {
 
     $profile = $profile ?: getenv('AWS_PROFILE') ?: 'default';
     $serverlessInfo =getServerlessInfo(null, $profile, $io);
